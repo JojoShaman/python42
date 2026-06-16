@@ -12,8 +12,10 @@ if __name__ == "__main__":
         print("---\n")
         print(file.read())
         print("\n---")
-        file.close()
-        print(f"File '{sys.argv[1]}' closed.")
 
     except (FileNotFoundError, PermissionError) as e:
         print(f"Error opening file '{sys.argv[1]}: {e}'")
+
+    finally:
+        file.close()
+        print(f"File '{sys.argv[1]}' closed.")

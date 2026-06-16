@@ -9,14 +9,15 @@ if __name__ == "__main__":
     try:
         print("=== Cyber Archives Recovery & Preservation ===")
         print(f"Accessing file '{sys.argv[1]}'")
-        file: IO = open(sys.argv[1], 'r')
+        file: IO | None = None
+        new_file: IO | None = None
+        file = open(sys.argv[1], 'r')
         content = file.read()
         file.close()
         print("---\n\n" + content + "\n\n---")
         print(f"File '{sys.argv[1]}' closed.\n")
-        new_content = '\n'.join(line + '#' for line in content.split('\n'))
+        new_content = '\n'.join(line + '#' for line in content.splitlines())
         print("Transform data:\n---\n")
-        # for line in new_content:
         print(new_content)
         print("\n---")
         sys.stdout.write("Enter new file name (or empty): ")
@@ -26,10 +27,10 @@ if __name__ == "__main__":
             print("Not saving data.")
             sys.exit()
         try:
-            new_file: IO = open(file_name, 'w')
+            new_file = open(file_name, 'w')
         except PermissionError as e:
             sys.stderr.write(
-                f"[STDERR] Error opening file '{file_name}: {e}'\n")
+                f"[STDERR] Error opening file '{file_name}': {e}\n")
             sys.stdout.write("Data not saved.\n")
             sys.exit()
         print(f"Saving data to '{file_name}'")
@@ -38,4 +39,9 @@ if __name__ == "__main__":
         print(f"Data saved in file '{file_name}'.")
     except (FileNotFoundError, PermissionError) as e:
         sys.stderr.write(
-            f"[STDERR] Error opening file '{sys.argv[1]}: {e}'\n")
+            f"[STDERR] Error opening file '{sys.argv[1]}': {e}\n")
+    finally:
+        if file and not file.closed:
+            file.close()
+        if new_file and not new_file.closed:
+            new_file.close()

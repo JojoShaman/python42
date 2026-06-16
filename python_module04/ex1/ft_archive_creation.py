@@ -9,7 +9,9 @@ if __name__ == "__main__":
         file_name = sys.argv[1]
         print("=== Cyber Archives Recovery & Preservation ===")
         print(f"Accessing file '{file_name}'")
-        file: IO = open(file_name, 'r')
+        file: IO | None = None
+        new_file: IO | None = None
+        file = open(file_name, 'r')
         content = file.read()
         file.close()
         print("---\n\n" + content + "\n\n---")
@@ -22,10 +24,15 @@ if __name__ == "__main__":
         if not file_name:
             print("Not saving data.")
             sys.exit()
-        new_file: IO = open(file_name, 'w')
+        new_file = open(file_name, 'w')
         print(f"Saving data to '{file_name}'")
         new_file.write(new_content)
         new_file.close()
         print(f"Data saved in file '{file_name}'.")
     except (FileNotFoundError, PermissionError) as e:
         print(f"Error opening file '{file_name}: {e}'")
+    finally:
+        if file and not file.closed:
+            file.close()
+        if new_file and not new_file.closed:
+            new_file.close()

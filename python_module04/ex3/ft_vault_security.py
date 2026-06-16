@@ -4,15 +4,16 @@ from typing import IO
 def secure_archive(file_name: str, mode: str = 'r',
                    content: str = 'content') -> tuple[bool, str]:
     try:
-        file: IO = open(file_name, mode)
-        if mode == 'r':
-            text = file.read()
-            print("Using 'secure_archive' "
-                  "to read from a regular file:")
-        elif mode == 'w':
-            file.write(content)
-            text = 'Content successfully written to file'
-        return (True, text)
+        file: IO | None = None
+        with open(file_name, mode) as file:
+            if mode == 'r':
+                text = file.read()
+                print("Using 'secure_archive' ",
+                      "to read from a regular file:")
+            elif mode == 'w':
+                file.write(content)
+                text = 'Content successfully written to file'
+            return (True, text)
     except FileNotFoundError as e:
         print("Using 'secure_archive' to read from a "
               "nonexistent file:")
