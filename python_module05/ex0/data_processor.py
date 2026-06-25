@@ -69,9 +69,9 @@ class LogProcessor(DataProcessor):
         else:
             return False
 
-    def ingest(self, data):
+    def ingest(self, data: Any) -> None:
         if self.validate(data):
-            if isinstance(data, list[dict]):
+            if isinstance(data, list):
                 self._data.extend(
                     [f"{element['log_level']}: {element['log_message']}"
                      for element in data])

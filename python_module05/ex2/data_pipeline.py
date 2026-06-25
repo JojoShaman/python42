@@ -5,7 +5,7 @@ from abc import ABC, abstractmethod
 
 class DataProcessor(ABC):
     def __init__(self) -> None:
-        self._data: list = []
+        self._data: list[Any] = []
         self.name = "Default processor"
         self.processed = 0
 
@@ -85,7 +85,7 @@ class DataStream():
 
 
 class NumericProcessor(DataProcessor):
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
         self.name = "Numeric Processor"
         self.processed = 0
@@ -98,7 +98,7 @@ class NumericProcessor(DataProcessor):
         else:
             return False
 
-    def ingest(self, data: int | float | list) -> None:
+    def ingest(self, data: int | float | list[int | float]) -> None:
         if self.validate(data):
             if isinstance(data, list):
                 self.processed += len(data)
@@ -111,7 +111,7 @@ class NumericProcessor(DataProcessor):
 
 
 class TextProcessor(DataProcessor):
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
         self.name = "Text Processor"
 
@@ -123,7 +123,7 @@ class TextProcessor(DataProcessor):
         else:
             return False
 
-    def ingest(self, data: str | list) -> None:
+    def ingest(self, data: str | list[str]) -> None:
         if self.validate(data):
             if isinstance(data, list):
                 self.processed += len(data)
@@ -136,7 +136,7 @@ class TextProcessor(DataProcessor):
 
 
 class LogProcessor(DataProcessor):
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
         self.name = "Log Processor"
 
@@ -148,7 +148,7 @@ class LogProcessor(DataProcessor):
         else:
             return False
 
-    def ingest(self, data):
+    def ingest(self, data: dict[str, Any] | list[dict[str, Any]]) -> None:
         if self.validate(data):
             if isinstance(data, list):
                 self.processed += len(data)
