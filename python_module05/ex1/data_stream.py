@@ -42,7 +42,7 @@ class DataStream():
                         error = True
                 if error:
                     print("DataStream error - ",
-                        f"Can't process element in stream: {element}")
+                          f"Can't process element in stream: {element}")
         else:
             print("No processor found, no processing")
 

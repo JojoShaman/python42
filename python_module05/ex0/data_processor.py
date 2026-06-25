@@ -4,7 +4,7 @@ from abc import ABC, abstractmethod
 
 class DataProcessor(ABC):
     def __init__(self) -> None:
-        self._data: list = []
+        self._data: list[Any] = []
         self._rank = 0
 
     def output(self) -> tuple[int, str]:
@@ -31,7 +31,7 @@ class NumericProcessor(DataProcessor):
         else:
             return False
 
-    def ingest(self, data: int | float | list) -> None:
+    def ingest(self, data: int | float | list[int | float]) -> None:
         if self.validate(data):
             if isinstance(data, list):
                 self._data.extend([str(element) for element in data])
@@ -50,7 +50,7 @@ class TextProcessor(DataProcessor):
         else:
             return False
 
-    def ingest(self, data: str | list) -> None:
+    def ingest(self, data: str | list[str]) -> None:
         if self.validate(data):
             if isinstance(data, list):
                 self._data.extend(data)
@@ -71,12 +71,13 @@ class LogProcessor(DataProcessor):
 
     def ingest(self, data):
         if self.validate(data):
-            if isinstance(data, list):
+            if isinstance(data, list[dict]):
                 self._data.extend(
                     [f"{element['log_level']}: {element['log_message']}"
                      for element in data])
             elif isinstance(data, dict):
-                self._data.append(f'{data['log_level']}: {data['log_message']}')
+                self._data.append(
+                    f"{data['log_level']}: {data['log_message']}")
         else:
             raise ValueError("Improper log data")
 
