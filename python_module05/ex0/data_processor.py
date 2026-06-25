@@ -53,7 +53,7 @@ class TextProcessor(DataProcessor):
     def ingest(self, data: str | list) -> None:
         if self.validate(data):
             if isinstance(data, list):
-                self._data.extend([element for element in data])
+                self._data.extend(data)
             elif isinstance(data, str):
                 self._data.append(data)
         else:
@@ -76,7 +76,7 @@ class LogProcessor(DataProcessor):
                     [f"{element['log_level']}: {element['log_message']}"
                      for element in data])
             elif isinstance(data, dict):
-                self._data.append(str(data))
+                self._data.append(f'{data['log_level']}: {data['log_message']}')
         else:
             raise ValueError("Improper log data")
 

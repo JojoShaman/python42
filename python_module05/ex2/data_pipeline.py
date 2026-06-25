@@ -50,18 +50,21 @@ class DataStream():
         self.proc_list.append(proc)
 
     def process_stream(self, stream: list[Any]) -> None:
-        error = False
-        for element in stream:
-            for x in self.proc_list:
-                if x.validate(element):
-                    x.ingest(element)
-                    error = False
-                    break
-                else:
-                    error = True
-            if error:
-                print("DataStream error - ",
-                      f"Can't process element in stream: {element}")
+        if self.proc_list:
+            error = False
+            for element in stream:
+                for x in self.proc_list:
+                    if x.validate(element):
+                        x.ingest(element)
+                        error = False
+                        break
+                    else:
+                        error = True
+                if error:
+                    print("DataStream error - ",
+                        f"Can't process element in stream: {element}")
+        else:
+            print("No processor found, no processing")
 
     def print_processors_stats(self) -> None:
         print("\n== DataStream statistics ==")
@@ -75,7 +78,7 @@ class DataStream():
     def output_pipeline(self, nb: int, plugin: ExportPlugin) -> None:
         for processor in self.proc_list:
             outputs = []
-            for x in range(nb):
+            for _ in range(nb):
                 if processor._data:
                     outputs.append(processor.output())
             plugin.process_output(outputs)
@@ -162,12 +165,12 @@ class LogProcessor(DataProcessor):
 if __name__ == "__main__":
     print("=== Code Nexus - Data Pipeline ===\n")
     print("Initialize Data Stream...")
-    test = DataStream()
-    test.print_processors_stats()
+    process = DataStream()
+    process.print_processors_stats()
     print("\nRegistering Processor\n")
-    test.register_processor(NumericProcessor())
-    test.register_processor(TextProcessor())
-    test.register_processor(LogProcessor())
+    process.register_processor(NumericProcessor())
+    process.register_processor(TextProcessor())
+    process.register_processor(LogProcessor())
     data = [
         'Hello world',
         [3.14, -1, 2.71],
@@ -187,14 +190,14 @@ if __name__ == "__main__":
         [32, 42, 64, 84, 128, 168],
         'World hello']
     print(f"Send first batch of data on stream: {data}")
-    test.process_stream(data)
-    test.print_processors_stats()
+    process.process_stream(data)
+    process.print_processors_stats()
     print("\nSend 3 processed data from each processor to a CSV plugin:")
-    test.output_pipeline(3, CsvPlugin())
-    test.print_processors_stats()
+    process.output_pipeline(3, CsvPlugin())
+    process.print_processors_stats()
     print(f"Send another batch of data : {data_2}")
-    test.process_stream(data_2)
-    test.print_processors_stats()
+    process.process_stream(data_2)
+    process.print_processors_stats()
     print("\nSend 5 processed data from each processor to a JSON plugin:")
-    test.output_pipeline(5, JsonPlugin())
-    test.print_processors_stats()
+    process.output_pipeline(5, JsonPlugin())
+    process.print_processors_stats()

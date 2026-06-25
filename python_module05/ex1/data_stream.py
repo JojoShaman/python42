@@ -30,18 +30,21 @@ class DataStream():
         self.proc_list.append(proc)
 
     def process_stream(self, stream: list[Any]) -> None:
-        error = False
-        for element in stream:
-            for x in self.proc_list:
-                if x.validate(element):
-                    x.ingest(element)
-                    error = False
-                    break
-                else:
-                    error = True
-            if error:
-                print("DataStream error - ",
-                      f"Can't process element in stream: {element}")
+        if self.proc_list:
+            error = False
+            for element in stream:
+                for x in self.proc_list:
+                    if x.validate(element):
+                        x.ingest(element)
+                        error = False
+                        break
+                    else:
+                        error = True
+                if error:
+                    print("DataStream error - ",
+                        f"Can't process element in stream: {element}")
+        else:
+            print("No processor found, no processing")
 
     def print_processors_stats(self) -> None:
         print("== DataStream statistics ==")
@@ -57,7 +60,6 @@ class NumericProcessor(DataProcessor):
     def __init__(self):
         super().__init__()
         self.name = "Numeric Processor"
-        self.processed = 0
 
     def validate(self, data: Any) -> bool:
         if isinstance(data, list):
@@ -158,10 +160,10 @@ if __name__ == "__main__":
     process.print_processors_stats()
     print("\nConsume some elements from the data processors: "
           "Numeric 3, Text 2, Log 1")
-    for x in range(3):
+    for _ in range(3):
         process.proc_list[0].output()
-    for x in range(2):
+    for _ in range(2):
         process.proc_list[1].output()
-    for x in range(1):
+    for _ in range(1):
         process.proc_list[2].output()
     process.print_processors_stats()
