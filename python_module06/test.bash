@@ -9,25 +9,44 @@ while true; do
     read -p "choose action : " action
     clear
     if [ "$action" = "0" ]; then
-        for i in 0 1 2 3 4 5; do
-            python3 ft_alembic_$i.py
-            printf '\n'
-        done
+        python3 ft_alembic_0.py
+        read -p "" next
+        printf '\n'
+        python3 ft_alembic_1.py
+        read -p "" next
+        printf '\n'
+        python3 ft_alembic_2.py
+        read -p "" next
+        printf '\n'
+        python3 ft_alembic_3.py
+        read -p "" next
+        printf '\n'
+        python3 ft_alembic_4.py
+        read -p "" next
+        printf '\n'
+        python3 ft_alembic_5.py
+        printf '\n'
     elif [ "$action" = "1" ]; then
-        for i in 0 1; do
-            python3 ft_distillation_$i.py
-            printf '\n'
-        done
+        python3 ft_distillation_0.py
+        read -p "" next
+        printf '\n'
+        python3 ft_distillation_1.py
+        printf '\n'
     elif [ "$action" = "2" ]; then
-        for i in 0 1 2; do
-            python3 ft_transmutation_$i.py
-            printf '\n'
-        done
+        python3 ft_transmutation_0.py
+        read -p "" next
+        printf '\n'
+        python3 ft_transmutation_1.py
+        read -p "" next
+        printf '\n'
+        python3 ft_transmutation_2.py
+        printf '\n'
     elif [ "$action" = "3" ]; then
-        for i in 0 1; do
-            python3 ft_kaboom_$i.py
-            printf '\n'
-        done
+        python3 ft_kaboom_0.py
+        read -p "" next
+        printf '\n'
+        python3 ft_kaboom_1.py
+        printf '\n'
     elif [ "$action" = "q" ]; then
         exit
     else
