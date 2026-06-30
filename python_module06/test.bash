@@ -20,7 +20,7 @@ while true; do
         done
     elif [ "$action" = "2" ]; then
         for i in 0 1 2; do
-            python3 ft_transmutation_0.py
+            python3 ft_transmutation_$i.py
             printf '\n'
         done
     elif [ "$action" = "3" ]; then
