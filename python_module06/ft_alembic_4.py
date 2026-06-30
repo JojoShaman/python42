@@ -7,6 +7,6 @@ print("Testing creat_air:", alchemy.create_air())
 print("Now show that not all functions can be reached\n" +
       "This will raise an exception!")
 try:
-    print(alchemy.create_earth())
+    print(alchemy.create_earth())  # type: ignore
 except Exception:
     print(f"Testing the hidden create_earth: {traceback.format_exc()}\n")
