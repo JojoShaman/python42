@@ -37,7 +37,7 @@ if __name__ == '__main__':
         try:
             import numpy as np
             import pandas as pd
-            import matplotlib.pyplot as plt
+            import matplotlib.pyplot as plt  # type: ignore
         except Exception as e:
             print(e)
         data = np.random.randint(999, size=(1000))
