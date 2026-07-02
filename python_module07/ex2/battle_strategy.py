@@ -7,7 +7,7 @@ from typing import cast
 
 class BattleStrategy(ABC):
     @abstractmethod
-    def act(self, creature: Creature):
+    def act(self, creature: Creature) -> None:
         pass
 
     @abstractmethod

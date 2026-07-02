@@ -7,28 +7,28 @@ class Creature(ABC):
         self._type = type
 
     @abstractmethod
-    def attack(self):
+    def attack(self) -> str:
         pass
 
-    def describe(self):
+    def describe(self) -> str:
         return (f"{self._name} is a {self._type} type creature")
 
 
 class Flameling(Creature):
-    def attack(self):
+    def attack(self) -> str:
         return (f"{self._name} uses Ember!")
 
 
 class Pyrodon(Creature):
-    def attack(self):
+    def attack(self) -> str:
         return (f"{self._name} uses Flamethrower!")
 
 
 class Aquabub(Creature):
-    def attack(self):
+    def attack(self) -> str:
         return (f"{self._name} uses Water Gun!")
 
 
 class Torragon(Creature):
-    def attack(self):
+    def attack(self) -> str:
         return (f"{self._name} uses Hydro Pump!")

@@ -22,15 +22,15 @@ def battle(opponents: list[tuple[CreatureFactory, BattleStrategy]]) -> None:
 
 
 if __name__ == "__main__":
-    basic: list = [
+    basic: list[tuple[CreatureFactory, BattleStrategy]] = [
         (FlameFactory(), NormalStrategy()),
         (HealingCreatureFactory(), DefensiveStrategy())
         ]
-    error: list = [
+    error: list[tuple[CreatureFactory, BattleStrategy]] = [
         (FlameFactory(), AgressiveStrategy()),
         (HealingCreatureFactory(), DefensiveStrategy())
         ]
-    multiple: list = [
+    multiple: list[tuple[CreatureFactory, BattleStrategy]] = [
         (AquaFactory(), NormalStrategy()),
         (HealingCreatureFactory(), DefensiveStrategy()),
         (TransformCreatureFactory(), AgressiveStrategy())
