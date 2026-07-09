@@ -95,7 +95,7 @@ if __name__ == "__main__":
             mission_id='M2024_MARS',
             mission_name='Mars Colony Establishment',
             destination='Mars',
-            launch_date='2024-09-18T00:00:00',
+            launch_date=datetime.fromisoformat('2024-09-18T00:00:00'),
             duration_days=900,
             crew=[
                 Connor,
@@ -153,7 +153,7 @@ if __name__ == "__main__":
             mission_id='M2024_MARS',
             mission_name='Mars Colony Establishment',
             destination='Mars',
-            launch_date='2024-09-18T00:00:00',
+            launch_date=datetime.fromisoformat('2024-09-18T00:00:00'),
             duration_days=900,
             crew=[
                 Connor,

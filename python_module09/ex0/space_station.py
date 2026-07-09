@@ -23,7 +23,8 @@ if __name__ == "__main__":
                                crew_size=6,
                                power_level=85.5,
                                oxygen_level=92.3,
-                               last_maintenance="1970-01-01T00:00:01",
+                               last_maintenance=datetime.fromisoformat(
+                                   "1970-01-01T00:00:01"),
                                is_operational=True)
         print("Valid station created:")
     except ValidationError as e:
@@ -37,7 +38,7 @@ if __name__ == "__main__":
     print(f"Oxygen: {station.oxygen_level}%")
     print(f"Last maintenant: {station.last_maintenance}")
     print("Status: "
-          f"{"Operational" if station.is_operational else "Off-nominal"}\n")
+          f"{'Operational' if station.is_operational else 'Off-nominal'}\n")
     print("========================================")
     try:
         invalid = SpaceStation(station_id="ISS001",
@@ -45,7 +46,8 @@ if __name__ == "__main__":
                                crew_size=30,
                                power_level=85.5,
                                oxygen_level=92.3,
-                               last_maintenance="1970-01-01T00:00:01",
+                               last_maintenance=datetime.fromisoformat(
+                                   "1970-01-01T00:00:01"),
                                is_operational=True)
         print("Valid station created:")
     except ValidationError as e:

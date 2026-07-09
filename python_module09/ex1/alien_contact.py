@@ -1,7 +1,9 @@
 from pydantic import BaseModel, Field, ValidationError, model_validator
 from datetime import datetime
-from typing import Optional, Self
+from typing import Optional
+from typing_extensions import Self
 from enum import Enum
+
 
 class ContactType(Enum):
     radio = 1
@@ -9,13 +11,14 @@ class ContactType(Enum):
     physical = 3
     telepathic = 4
 
+
 class AlienContact(BaseModel):
     contact_id: str = Field(min_length=5, max_length=15)
     timestamp: datetime
     location: str = Field(min_length=3, max_length=100)
     contact_type: ContactType
     signal_strength: float = Field(ge=0.0, le=10.0)
-    duration_minutes: int = Field(ge= 1, le=1400)
+    duration_minutes: int = Field(ge=1, le=1400)
     witness_count: int = Field(ge=1, le=100)
     message_received: Optional[str] = Field(default=None, max_length=500)
     is_verified: bool = Field(default=False)
@@ -26,14 +29,17 @@ class AlienContact(BaseModel):
         if not self.contact_id.startswith('AC'):
             errors.append('Contact ID must start with "AC" (Alien Contact)')
         if self.contact_type == ContactType.physical and not self.is_verified:
-                errors.append("Physical contact reports must be verified")
-        if self.contact_type == ContactType.telepathic and self.witness_count < 3:
+            errors.append("Physical contact reports must be verified")
+        if (self.contact_type == ContactType.telepathic and
+                self.witness_count < 3):
             errors.append("Telepathic contact requires at least 3 witnesses")
         if self.signal_strength > 7.0 and not self.message_received:
-             errors.append("Strong signals (> 7.0) should include received messages")
+            errors.append(
+                "Strong signals (> 7.0) should include received messages")
         if errors:
-             raise ValueError('\n'.join(errors))
+            raise ValueError('\n'.join(errors))
         return self
+
 
 if __name__ == "__main__":
     print("Alien Contact Log Validation")
@@ -41,7 +47,7 @@ if __name__ == "__main__":
     try:
         contact_one = AlienContact(
             contact_id='AC_2024_001',
-            timestamp='1970-01-01T00:00:01',
+            timestamp=datetime.fromisoformat('1970-01-01T00:00:01'),
             location='Area 51, Nevada',
             contact_type=ContactType.radio,
             signal_strength=8.5,
@@ -65,7 +71,7 @@ if __name__ == "__main__":
     try:
         contact_two = AlienContact(
             contact_id='2024_001',
-            timestamp='1970-01-01T00:00:02',
+            timestamp=datetime.fromisoformat('1970-01-01T00:00:02'),
             location='Area 51, Nevada',
             contact_type=ContactType.telepathic,
             signal_strength=15,
