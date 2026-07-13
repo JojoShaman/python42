@@ -4,7 +4,8 @@ from typing import Any
 from functools import wraps
 
 
-def spell_timer(func: Callable) -> Callable:
+def spell_timer(
+        func: Callable[..., str]) -> Callable[..., Any]:
     @wraps(func)
     def timer(*args: Any, **kwargs: Any) -> Any:
         print(f"Casting {func.__name__}...")
@@ -22,8 +23,8 @@ def fireball() -> str:
     return "Fireball cast!"
 
 
-def power_validator(min_power: int) -> Callable:
-    def decorator(func: Callable) -> Callable:
+def power_validator(min_power: int) -> Callable[..., Any]:
+    def decorator(func: Callable[..., Any]) -> Callable[..., Any]:
         @wraps(func)
         def power_check(*args: Any, **kwargs: Any) -> Any:
             power = kwargs.get('power', args[-1])
@@ -35,8 +36,12 @@ def power_validator(min_power: int) -> Callable:
     return decorator
 
 
-def retry_spell(max_attempts: int) -> Callable:
-    def decorator(func: Callable) -> Callable:
+class CastError(Exception):
+    pass
+
+
+def retry_spell(max_attempts: int) -> Callable[..., Any]:
+    def decorator(func: Callable[..., Any]) -> Callable[..., Any]:
         @wraps(func)
         def call_func(*args: Any, **kwargs: Any) -> Any:
             for i in range(1, max_attempts + 1):
@@ -44,7 +49,7 @@ def retry_spell(max_attempts: int) -> Callable:
                 try:
                     result = func(*args, **kwargs)
                     return result
-                except Exception:
+                except CastError:
                     if i != max_attempts:
                         print("Spell failed, retrying... ",
                               f"(attempt {i}/{max_attempts})")
@@ -56,8 +61,10 @@ def retry_spell(max_attempts: int) -> Callable:
 
 
 @retry_spell(max_attempts=3)
-def spell(message: str) -> str:
-    return message
+def spell(error: bool = True) -> str:
+    if error:
+        raise CastError
+    return "Waaaaaaagh spelled !"
 
 
 class MageGuild:
@@ -77,8 +84,8 @@ if __name__ == "__main__":
     print("\nTesting spell timer...")
     print(f"Result: {fireball()}")
     print("\nTesting retrying spell...")
-    print(spell())
-    print(spell("Waaaaaaagh spelled !"))
+    print(spell(True))
+    print(spell(False))
     print("\nTesting MageGuild...")
     sleep(1)
     print(MageGuild.validate_mage_name("Phoenix"))
